@@ -90,6 +90,59 @@ QuickFund/
 
 ---
 
+## 🚀 Quick Start / Installation
+
+### Prerequisites
+- Node.js 18+
+- Docker & Docker Compose
+- Git
+
+### Option 1: Docker (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/Chymezy/QuickFund-.git_
+cd QuickFund
+
+# Start all services
+docker-compose up -d
+
+# The application will be available at:
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:3001
+# API Docs: http://localhost:3001/api/docs
+```
+
+### Option 2: Local Development
+```bash
+# Clone the repository
+git clone https://github.com/Chymezy/QuickFund-.git
+cd QuickFund-
+
+# Install dependencies
+npm run install:all
+
+# Set up environment variables
+cp backend/.env.example backend/.env
+# Edit backend/.env with your database credentials
+
+# Start database (requires PostgreSQL)
+# Create database: quickfund
+
+# Run database migrations and seeders
+cd backend
+npm run db:migrate
+npm run db:seed
+
+# Start backend
+npm run start:dev
+
+# In another terminal, start frontend
+cd ../frontend
+npm run dev
+```
+
+---
+
 ## 🚦 Project Status
 
 ### ✅ Fully Implemented
