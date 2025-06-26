@@ -100,11 +100,16 @@ QuickFund/
 ### Option 1: Docker (Recommended)
 ```bash
 # Clone the repository
-git clone https://github.com/Chymezy/QuickFund-.git_
-cd QuickFund
+git clone https://github.com/Chymezy/QuickFund-.git
+cd QuickFund-
 
-# Start all services
-docker-compose up -d
+# Copy and edit environment variables for backend and frontend
+cp backend/.env.example backend/.env
+cp quickFund/.env.local.example quickFund/.env.local
+# Edit backend/.env and quickFund/.env.local as needed
+
+# Start all services (backend, frontend, Postgres, Redis)
+docker-compose up --build
 
 # The application will be available at:
 # Frontend: http://localhost:3000
@@ -118,26 +123,30 @@ docker-compose up -d
 git clone https://github.com/Chymezy/QuickFund-.git
 cd QuickFund-
 
-# Install dependencies
+# Install dependencies for both backend and frontend
 npm run install:all
 
-# Set up environment variables
+# Copy and edit environment variables
 cp backend/.env.example backend/.env
-# Edit backend/.env with your database credentials
+cp quickFund/.env.local.example quickFund/.env.local
+# Edit backend/.env and quickFund/.env.local as needed
 
-# Start database (requires PostgreSQL)
-# Create database: quickfund
+# Start Postgres and Redis (can use Docker Compose or local installations)
+docker-compose up db redis
+# Or start your own Postgres/Redis locally
 
 # Run database migrations and seeders
 cd backend
-npm run db:migrate
-npm run db:seed
+npx prisma migrate deploy
+npx ts-node scripts/create-admin.ts
 
 # Start backend
+yarn start:dev
+# or
 npm run start:dev
 
 # In another terminal, start frontend
-cd ../frontend
+cd ../quickFund
 npm run dev
 ```
 
