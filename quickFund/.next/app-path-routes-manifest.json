@@ -1,0 +1,21 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/(main)/about/page": "/about",
+  "/(main)/faqs/page": "/faqs",
+  "/(main)/login/page": "/login",
+  "/(main)/signup/page": "/signup",
+  "/(main)/terms/page": "/terms",
+  "/admin/applications/[loanId]/page": "/admin/applications/[loanId]",
+  "/admin/applications/page": "/admin/applications",
+  "/admin/export/page": "/admin/export",
+  "/admin/page": "/admin",
+  "/admin/repayments/page": "/admin/repayments",
+  "/page": "/",
+  "/user/agreement/[loanId]/page": "/user/agreement/[loanId]",
+  "/user/apply/page": "/user/apply",
+  "/user/loans/[loanId]/page": "/user/loans/[loanId]",
+  "/user/loans/page": "/user/loans",
+  "/user/page": "/user",
+  "/user/repayment/[loanId]/page": "/user/repayment/[loanId]"
+}

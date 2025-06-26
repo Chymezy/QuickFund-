@@ -10,8 +10,6 @@ import {
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import { loanApi, LoanDetails } from '@/lib/api/loans';
-// @ts-expect-error: No types for html2pdf.js
-import html2pdf from 'html2pdf.js';
 import { formatCurrency, formatDate } from '@/lib/loanHelpers';
 import { useAuthStore } from '@/lib/stores/authStore';
 
@@ -78,6 +76,8 @@ export default function LoanAgreement() {
     if (!agreement) return;
     setIsDownloading(true);
     try {
+      // Dynamically import html2pdf.js only in the browser
+      const html2pdf = (await import('html2pdf.js')).default;
       // Find the agreement content div
       const agreementElement = document.getElementById('agreement-content');
       if (!agreementElement) throw new Error('Agreement content not found');

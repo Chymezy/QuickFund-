@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+    image: quickfund-backend:local
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+    command: ["./wait-for-db.sh", "db", "npm", "run", "start:prod"]
+
+  frontend:
+    build:
+      context: ./quickFund
+    image: quickfund-frontend:local
+    env_file:
+      - ./quickFund/.env.local
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: quickfund
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata: 

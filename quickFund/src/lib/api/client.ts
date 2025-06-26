@@ -2,17 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // Environment-aware API URL configuration
 const getApiUrl = () => {
-  // Development
-  if (process.env.NODE_ENV === 'development') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
-  }
-  
-  // Production - use relative URL for same-domain deployment
-  if (typeof window !== 'undefined') {
-    return '/api/v1';
-  }
-  
-  // Server-side rendering fallback
   return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 };
 

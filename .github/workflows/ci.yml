@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies (npm workspaces)
+        run: npm install
+
+      - name: Build backend
+        run: npm run build --workspace=backend
+
+      - name: Build frontend
+        run: npm run build --workspace=quickFund
+
+      - name: Lint backend
+        run: npm run lint --workspace=backend
+
+      - name: Lint frontend
+        run: npm run lint --workspace=quickFund
+
+      - name: Build Docker image for backend
+        run: docker build -t backend:ci ./backend
+
+      - name: Build Docker image for frontend
+        run: docker build -t frontend:ci ./quickFund
+
+      # Add test steps if you have them
+      # - name: Test backend
+      #   run: npm test --workspace=backend
+
+      # - name: Test frontend
+      #   run: npm test --workspace=quickFund
+
+      # Optionally, push Docker images to a registry
+      # - name: Log in to DockerHub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #
+      # - name: Push backend image
+      #   run: docker push <your-dockerhub-username>/backend:ci
+      #
+      # - name: Push frontend image
+      #   run: docker push <your-dockerhub-username>/frontend:ci 

@@ -4,6 +4,7 @@ import Features from "@/components/home/Features";
 import LoanTypes from "@/components/home/LoanTypes";
 import HowItWorks from "@/components/home/HowItWorks";
 import CTA from "@/components/home/CTA";
+import Testimonials from "@/components/home/Testimonials";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <Features />
       <LoanTypes />
       <HowItWorks />
+      <Testimonials />
       <CTA />
     </SiteLayout>
   );
