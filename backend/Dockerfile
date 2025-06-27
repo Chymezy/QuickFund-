@@ -14,14 +14,17 @@ ENV NODE_OPTIONS=--openssl-legacy-provider
 COPY package*.json ./
 RUN npm ci
 
+# Copy Prisma schema and migrations
+COPY prisma ./prisma
+
+# Generate Prisma client
+RUN npx prisma generate
+
 # Copy the rest of the backend code
 COPY . .
 
 # Make wait-for-db.sh executable
 RUN chmod +x wait-for-db.sh
-
-# Generate Prisma client
-RUN npx prisma generate
 
 # Build the NestJS app
 RUN npm run build

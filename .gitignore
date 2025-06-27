@@ -4,7 +4,7 @@ frontend/
 /dist
 /node_modules
 /build
-
+.next/
 # Logs
 logs
 *.log
