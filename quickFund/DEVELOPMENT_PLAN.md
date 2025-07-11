@@ -86,5 +86,3 @@ This document outlines a step-by-step plan for building a production-quality Nex
 - Polish UI/UX.
 
 ---
-
-**Use this plan as your roadmap. For each step, ask for guidance, best practices, or explanations as needed. You will write all code yourself for maximum learning.** 
