@@ -1,36 +1,47 @@
-# Use official Node.js LTS image
-FROM node:20
+# Build stage
+FROM node:20-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Install Postgres client for wait-for-db.sh
-RUN apt-get update && apt-get install -y postgresql-client
-
-# Set legacy OpenSSL provider for Node.js (fixes Prisma/npx SSL errors)
-ENV NODE_OPTIONS=--openssl-legacy-provider
-
-# Copy package files and install dependencies
+# Install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy Prisma schema and migrations
+# Copy Prisma schema and generate client
 COPY prisma ./prisma
-
-# Generate Prisma client
 RUN npx prisma generate
 
-# Copy the rest of the backend code
+# Copy source code and build
 COPY . .
-
-# Make wait-for-db.sh executable
-RUN chmod +x wait-for-db.sh
-
-# Build the NestJS app
 RUN npm run build
 
-# Expose the backend port
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install only production dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy built app and Prisma client
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/scripts ./scripts
+
+# Install PostgreSQL client (Alpine version)
+RUN apk add --no-cache postgresql-client
+
+# Copy and set permissions for wait-for-db.sh
+COPY wait-for-db.sh ./
+RUN chmod +x wait-for-db.sh
+
+# Copy startup script
+COPY start.sh ./
+RUN chmod +x start.sh
+
 EXPOSE 3001
 
-# Start the app in production mode
-CMD ["sh", "-c", "npx prisma migrate deploy && npx ts-node scripts/create-admin.ts && npm run start:prod"] 
+CMD ["./start.sh"] 
